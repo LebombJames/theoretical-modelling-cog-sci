@@ -6,6 +6,7 @@ import random
 import itertools
 # For possibly showing the graph visually
 # import matplotlib.pyplot as plt
+from graphs import * 
 
 # https://networkx.org/documentation/stable/tutorial.html
 def create_graph(nodes, edges):
@@ -74,41 +75,55 @@ def hot_coherence_value(graph, accepted):
 def exhaustive_cold_coherence(graph):
     optimal_value = 0
     optimal_accepted_list = []
+    optimals = []
     n = len(graph.nodes.items())
     lst = [list(i) for i in itertools.product([-1, 1], repeat=n)]
     for accepted in lst:
         this = cold_coherence_value(graph, accepted)
         if this > optimal_value:
+            optimals = []
+            optimals.append(accepted)
             optimal_value = this
             optimal_accepted_list = accepted
-    return (optimal_value, list(zip(range(1,graph.number_of_nodes()+1), optimal_accepted_list)))
+        if this == optimal_value:
+            optimals.append(accepted)
+            optimal_value = this
+            optimal_accepted_list = accepted
+    return (optimal_value, list(zip(range(1,graph.number_of_nodes()+1), optimal_accepted_list)), optimals)
 
 def exhaustive_hot_coherence(graph):
     optimal_value = 0
     optimal_accepted_list = []
+    optimals = []
     n = len(graph.nodes.items())
     lst = [list(i) for i in itertools.product([-1, 1], repeat=n)]
     for accepted in lst:
         this = hot_coherence_value(graph, accepted)
         if this > optimal_value:
+            optimals = []
+            optimals.append(accepted)
             optimal_value = this
             optimal_accepted_list = accepted
-    return (optimal_value, list(zip( range(1, graph.number_of_nodes()+1), optimal_accepted_list )))
-
-
+        if this == optimal_value:
+            optimals.append(accepted)
+            optimal_value = this
+            optimal_accepted_list = accepted
+    return (optimal_value, list(zip( range(1, graph.number_of_nodes()+1), optimal_accepted_list )), optimals)
 
 def main():
-    G = create_graph(16, 40)
+    # G = create_graph(16, 40)
+    G = create_test_graph()[2]
     # print(G.nodes[1]["valence"])
     # These return a tuple of the coherence score and node activation values
     cold_result = exhaustive_cold_coherence(G)
     hot_result = exhaustive_hot_coherence(G)
-    print(cold_result)
-    print(hot_result)
-    # print(G.nodes)
-    print(cold_result[1] == hot_result[1])
-    for edge, constraint in G.edges.items(): 
-        print(edge, constraint)
+    print(cold_result[0], cold_result[1])
+    print(hot_result[0], hot_result[1])
+    print(G.nodes)
+
+    print(cold_result[2] == hot_result[2])
+    # for edge, constraint in G.edges.items(): 
+    #     print(edge, constraint)
         
 if __name__ == "__main__":
     main()
