@@ -11,8 +11,9 @@ import itertools
 def create_graph(nodes, edges):
     G = nx.Graph()
     for i in range(1,nodes+1):
-        # activation = random.uniform(-1.0, 1.0)
-        G.add_node(i)
+        valence = bool(random.getrandbits(1))
+        # print(valence)
+        G.add_node(i, valence = valence)
     for i in range(1,edges+1):
         num1 = random.randrange(1,nodes+1)
         num2 = num1
@@ -23,9 +24,9 @@ def create_graph(nodes, edges):
     # print(list(G.nodes.items()))
     return G
 
-def add_valence(graph):
+# def add_valence(graph):
 
-    return graph
+#     return graph    
 
 ################################################################
 # Calculates the sum of all 
@@ -46,18 +47,23 @@ def cold_coherence_value(graph, accepted):
                 max += 1
     return max
 
-def hot_coherence_value(graph, accepted, valence):
+def hot_coherence_value(graph, accepted):
     max = 0
     for edge, constraint in graph.edges.items():
-        print(edge)
-        print(constraint["isPositiveConstraint"])
+        # print(edge)
+        # print(constraint["isPositiveConstraint"])
         if constraint["isPositiveConstraint"]:
-            if accepted[(edge[0])] == accepted[(edge[1])]:
+            if accepted[(edge[0])-1] == accepted[(edge[1])-1]:
+                max += 1
+            if graph.nodes[(edge[0])]["valence"] == graph.nodes[(edge[1])]["valence"]:
                 max += 1
         # Negative constraint
         else:
-            if accepted[(edge[0])] != accepted[(edge[1])]:
+            if accepted[(edge[0])-1] != accepted[(edge[1])-1]:
+                max += 1 
+            if graph.nodes[(edge[0])]["valence"] != graph.nodes[(edge[1])]["valence"]:
                 max += 1
+
     return max
 
 
@@ -75,7 +81,7 @@ def exhaustive_cold_coherence(graph):
         if this > optimal_value:
             optimal_value = this
             optimal_accepted_list = accepted
-    return (optimal_value, list(zip(range(1,11), optimal_accepted_list)))
+    return (optimal_value, list(zip(range(1,graph.number_of_nodes()+1), optimal_accepted_list)))
 
 def exhaustive_hot_coherence(graph):
     optimal_value = 0
@@ -87,14 +93,20 @@ def exhaustive_hot_coherence(graph):
         if this > optimal_value:
             optimal_value = this
             optimal_accepted_list = accepted
-    return (optimal_value, list(zip(range(1,11), optimal_accepted_list)))
+    return (optimal_value, list(zip( range(1, graph.number_of_nodes()+1), optimal_accepted_list )))
 
 
 
 def main():
-    G = create_graph(19, 60)
-    print(exhaustive_cold_coherence(G))
-    print(G.nodes)
+    G = create_graph(16, 40)
+    # print(G.nodes[1]["valence"])
+    # These return a tuple of the coherence score and node activation values
+    cold_result = exhaustive_cold_coherence(G)
+    hot_result = exhaustive_hot_coherence(G)
+    print(cold_result)
+    print(hot_result)
+    # print(G.nodes)
+    print(cold_result[1] == hot_result[1])
     for edge, constraint in G.edges.items(): 
         print(edge, constraint)
         
