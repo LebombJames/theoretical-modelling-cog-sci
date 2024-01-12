@@ -9,24 +9,24 @@ import itertools
 def create_test_graph():
     lst_graphs = []
 
-    G = nx.Graph()
-    G.add_node(1, valence = True)
-    G.add_node(2, valence = True)
-    G.add_node(3, valence = True)
-    G.add_node(4, valence = True)
-    G.add_node(5, valence = True)
-    G.add_node(6, valence = True)
-    G.add_node(7, valence = True)
-    G.add_node(8, valence = True)
+    Graph1 = nx.Graph()
+    Graph1.add_node(1, valence = True)
+    Graph1.add_node(2, valence = True)
+    Graph1.add_node(3, valence = True)
+    Graph1.add_node(4, valence = True)
+    Graph1.add_node(5, valence = True)
+    Graph1.add_node(6, valence = True)
+    Graph1.add_node(7, valence = True)
+    Graph1.add_node(8, valence = True)
     
-    G.add_edge(1, 2, isPositiveConstraint = True)
-    G.add_edge(2, 3, isPositiveConstraint = True)
-    G.add_edge(3, 4, isPositiveConstraint = True)
-    G.add_edge(4, 5, isPositiveConstraint = True)
-    G.add_edge(6, 7, isPositiveConstraint = True)
-    G.add_edge(7, 8, isPositiveConstraint = True)
-    G.add_edge(8, 1, isPositiveConstraint = True)
-    lst_graphs.append(G)
+    Graph1.add_edge(1, 2, isPositiveConstraint = True)
+    Graph1.add_edge(2, 3, isPositiveConstraint = True)
+    Graph1.add_edge(3, 4, isPositiveConstraint = True)
+    Graph1.add_edge(4, 5, isPositiveConstraint = True)
+    Graph1.add_edge(6, 7, isPositiveConstraint = True)
+    Graph1.add_edge(7, 8, isPositiveConstraint = True)
+    Graph1.add_edge(8, 1, isPositiveConstraint = True)
+    lst_graphs.append(Graph1)
 
     Graph2 = nx.Graph()
     Graph2.add_node(1, valence = True)
@@ -69,7 +69,8 @@ def create_test_graph():
 
 
     G = nx.Graph()
-    nodes = 
+    nodes = 12
+    edges = 30
     for i in range(1,nodes+1):
         valence = bool(random.getrandbits(1))
         # print(valence)
@@ -81,6 +82,7 @@ def create_test_graph():
             num2 = random.randrange(1,nodes+1)
         isPositiveConstraint = bool(random.getrandbits(1))
         G.add_edge(num1, num2, isPositiveConstraint = isPositiveConstraint)
+    lst_graphs.append(G)
 
     return lst_graphs
     
