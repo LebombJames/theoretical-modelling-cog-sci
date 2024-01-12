@@ -112,16 +112,16 @@ def exhaustive_hot_coherence(graph):
 
 def main():
     # G = create_graph(16, 40)
-    G = create_test_graph()[2]
+    for G in create_test_graph():
     # print(G.nodes[1]["valence"])
     # These return a tuple of the coherence score and node activation values
-    cold_result = exhaustive_cold_coherence(G)
-    hot_result = exhaustive_hot_coherence(G)
-    print(cold_result[0], cold_result[1])
-    print(hot_result[0], hot_result[1])
-    print(G.nodes)
+        cold_result = exhaustive_cold_coherence(G)
+        hot_result = exhaustive_hot_coherence(G)
+        print(cold_result[0], cold_result[1])
+        print(hot_result[0], hot_result[1])
+        print(G.nodes)
 
-    print(cold_result[2] == hot_result[2])
+        print(cold_result[2] == hot_result[2])
     # for edge, constraint in G.edges.items(): 
     #     print(edge, constraint)
         
